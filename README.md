@@ -1,54 +1,42 @@
-# React + TypeScript + Vite
+Project Title
+My Table Component - A customizable React table built using Material React Table (MRT).
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+Row Selection: Select one or multiple rows for actions such as deletion or editing.
+Sorting: Click column headers to sort data.
+Pagination: Manage large datasets across multiple pages.
+Responsive Design: Works well on both desktop and mobile.
+Filtering: Apply filters to columns to narrow down data.
+Customizable Columns: Add, remove, or reorder columns dynamically.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Installation
+To get started with the table component in your React project, follow these steps:
 
-## Expanding the ESLint configuration
+Clone the repository (or create your own project if it's a new table component):
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```powershell
+git clone <repo-url>
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Navigate into the project directory:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+ ```powershell
+cd my-table-project
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Install required dependencies:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Ensure you have Node.js installed. Then run:
+
+ ```powershell
+npm install
+
+Run the development server:
+
+By default, Vite will run the server on port 5173:
+
+ ```powershell
+npm run dev
+
+Access the project in your browser:
+
+Open http://localhost:5173 (default Vite port) 
