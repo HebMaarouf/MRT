@@ -1,21 +1,8 @@
+import {  useState } from "react";
+import { Paper, Container, Box } from "@mui/material";
 import { MaterialReactTable } from "material-react-table";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Paper, Container, Box } from "@mui/material";
 
-// Sample Data
-const data = [
-  { id: 1, firstName: "John", lastName: "Doe", age: 30 },
-  { id: 2, firstName: "Jane", lastName: "Smith", age: 25 },
-  { id: 3, firstName: "Alice", lastName: "Johnson", age: 28 },
-];
-
-// Table Columns
-const columns = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "firstName", header: "First Name" },
-  { accessorKey: "lastName", header: "Last Name" },
-  { accessorKey: "age", header: "Age" },
-];
 
 // Custom MUI Theme
 const theme = createTheme({
@@ -31,21 +18,49 @@ const theme = createTheme({
 });
 
 const StyledMRT = () => {
+
+  const [tableData, setTableData] = useState([
+    { id: 1, firstName: "John", lastName: "Doe", age: 30 },
+    { id: 2, firstName: "Jane", lastName: "Smith", age: 25 },
+    { id: 3, firstName: "Alice", lastName: "Johnson", age: 28 },
+    { id: 4, firstName: "John", lastName: "Doe", age: 30 },
+    { id: 5, firstName: "Jane", lastName: "Smith", age: 25 },
+    { id: 6, firstName: "Alice", lastName: "Johnson", age: 28 },
+    { id: 7, firstName: "John", lastName: "Doe", age: 30 },
+    { id: 8, firstName: "Jane", lastName: "Smith", age: 25 },
+    { id: 9, firstName: "Alice", lastName: "Johnson", age: 28 },
+    { id: 10, firstName: "John", lastName: "Doe", age: 30 },
+    { id: 11, firstName: "Jane", lastName: "Smith", age: 25 },
+    { id: 12, firstName: "Alice", lastName: "Johnson", age: 28 },
+    { id: 13, firstName: "John", lastName: "Doe", age: 30 },
+    { id: 14, firstName: "Jane", lastName: "Smith", age: 25 },
+    { id: 15, firstName: "Alice", lastName: "Johnson", age: 28 },
+    { id: 16, firstName: "John", lastName: "Doe", age: 30 },
+    { id: 17, firstName: "Jane", lastName: "Smith", age: 25 },
+    { id: 18, firstName: "Alice", lastName: "Johnson", age: 28 },
+  ]);
+
+
+  // Table Columns
+  const columns = [
+    { accessorKey: 'id', header: 'ID', enableSorting: true },
+    { accessorKey: 'firstName', header: 'First Name', enableSorting: true },
+    { accessorKey: 'lastName', header: 'Last Name', enableSorting: true },
+    { accessorKey: 'age', header: 'Age', enableSorting: true },
+  ]
+
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="lg" sx={{ mt: 5 }}>
+      <Container >
         <Box
           sx={{
-            backdropFilter: "blur(10px)",
             background: "rgba(255, 255, 255, 0.1)",
             borderRadius: "16px",
             boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
-            padding: "24px",
             border: "1px solid rgba(255, 255, 255, 0.2)",
           }}
         >
           <Paper
-            elevation={5}
             sx={{
               overflow: "hidden",
               borderRadius: "16px",
@@ -54,54 +69,49 @@ const StyledMRT = () => {
           >
             <MaterialReactTable
               columns={columns}
-              data={data}
+              data={tableData}
+
+              // ✅ Enable All Useful Features
               enableSorting
               enableColumnFilters
+              enableColumnPinning
+              enableRowSelection
+              enableColumnActions
+              enableDensityToggle
+              enableStickyHeader
+              enableStickyFooter
+              enableGlobalFilter
               enablePagination
+              enableGrouping
+              enableMultiSort
+              enableRowNumbers
+              enableSelectAll
+              enableColumnResizing
+              enableColumnVirtualization
+              layoutMode="grid"
+              // ✅ Editing Setup (Use muiTableBodyRowProps)
+              enableEditing
+              debugTable={true} // ✅ Shows MRT logs in console
+              muiTableBodyRowProps={({ row }) => ({
+                onDoubleClick: () => console.log(`Editing row: ${row.original.id}`),
+                sx: { cursor: 'pointer' },
+              })}
+              onEditingRowSave={({ values }) => {
+                setTableData((prevData) =>
+                  prevData.map((row) => (row.id === values.id ? values : row))
+                );
+              }}
+              muiTableContainerProps={{
+                sx: {
+                  overflowX: 'auto', // Ensures scrolling only appears when needed
+                  maxWidth: '100%', // Prevents unnecessary stretching
+                },
+              }}
               muiTableHeadCellProps={{
                 sx: {
                   backgroundColor: "#4A90E2",
                   color: "#fff",
                   fontWeight: "bold",
-                  fontSize: "16px",
-                },
-              }}
-              muiTableBodyRowProps={{
-                sx: {
-                  "&:hover": {
-                    backgroundColor: "rgba(74, 144, 226, 0.1)",
-                    transform: "scale(1.01)",
-                    transition: "all 0.2s ease-in-out",
-                  },
-                },
-              }}
-              muiTableProps={{
-                sx: {
-                  borderRadius: "16px",
-                  width: "100%", // Make sure table fills the container
-                  tableLayout: "fixed", // Avoid issues with overflowing columns
-                  "& .MuiTableCell-root": {
-                    padding: "12px",
-                  },
-                  "& .MuiTableRow-root:nth-of-type(odd)": {
-                    backgroundColor: "rgba(74, 144, 226, 0.05)",
-                  },
-                  "& .MuiTableBody-root": {
-                    maxHeight: "400px", // Set a max-height for scrollable body
-                    overflowY: "auto",  // Enable vertical scroll
-                    overflowX: "auto",  // Enable horizontal scroll when necessary
-                    "&::-webkit-scrollbar": {
-                      width: "8px", // Set the width of the scrollbar
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "#4A90E2", // Scrollbar thumb color
-                      borderRadius: "10px", // Rounded thumb
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      backgroundColor: "#f0f0f0", // Scrollbar track color
-                      borderRadius: "10px", // Rounded track
-                    },
-                  },
                 },
               }}
             />
