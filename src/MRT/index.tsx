@@ -1,125 +1,194 @@
-import {  useState } from "react";
-import { Paper, Container, Box } from "@mui/material";
-import { MaterialReactTable } from "material-react-table";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import {useMemo, useState } from 'react';
+
+import {
+  MRT_EditActionButtons,
+  MaterialReactTable,
+  type MRT_ColumnDef,
+  type MRT_TableOptions,
+  useMaterialReactTable,
+} from 'material-react-table';
+import {
+  Box,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
+import { type User, fakeData, usStates } from './makeData';
+import EditIcon from '@mui/icons-material/Edit';
 
 
-// Custom MUI Theme
-const theme = createTheme({
-  palette: {
-    mode: "light", // Change to 'dark' for dark mode
-    primary: {
-      main: "#4A90E2",
-    },
-    secondary: {
-      main: "#E91E63",
-    },
-  },
-});
 
-const StyledMRT = () => {
+export const Example = () => {
+  
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string | undefined>
+  >({});
 
-  const [tableData, setTableData] = useState([
-    { id: 1, firstName: "John", lastName: "Doe", age: 30 },
-    { id: 2, firstName: "Jane", lastName: "Smith", age: 25 },
-    { id: 3, firstName: "Alice", lastName: "Johnson", age: 28 },
-    { id: 4, firstName: "John", lastName: "Doe", age: 30 },
-    { id: 5, firstName: "Jane", lastName: "Smith", age: 25 },
-    { id: 6, firstName: "Alice", lastName: "Johnson", age: 28 },
-    { id: 7, firstName: "John", lastName: "Doe", age: 30 },
-    { id: 8, firstName: "Jane", lastName: "Smith", age: 25 },
-    { id: 9, firstName: "Alice", lastName: "Johnson", age: 28 },
-    { id: 10, firstName: "John", lastName: "Doe", age: 30 },
-    { id: 11, firstName: "Jane", lastName: "Smith", age: 25 },
-    { id: 12, firstName: "Alice", lastName: "Johnson", age: 28 },
-    { id: 13, firstName: "John", lastName: "Doe", age: 30 },
-    { id: 14, firstName: "Jane", lastName: "Smith", age: 25 },
-    { id: 15, firstName: "Alice", lastName: "Johnson", age: 28 },
-    { id: 16, firstName: "John", lastName: "Doe", age: 30 },
-    { id: 17, firstName: "Jane", lastName: "Smith", age: 25 },
-    { id: 18, firstName: "Alice", lastName: "Johnson", age: 28 },
-  ]);
-
-
-  // Table Columns
-  const columns = [
-    { accessorKey: 'id', header: 'ID', enableSorting: true },
-    { accessorKey: 'firstName', header: 'First Name', enableSorting: true },
-    { accessorKey: 'lastName', header: 'Last Name', enableSorting: true },
-    { accessorKey: 'age', header: 'Age', enableSorting: true },
-  ]
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Container >
-        <Box
-          sx={{
-            background: "rgba(255, 255, 255, 0.1)",
-            borderRadius: "16px",
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-          }}
-        >
-          <Paper
-            sx={{
-              overflow: "hidden",
-              borderRadius: "16px",
-              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15)",
-            }}
-          >
-            <MaterialReactTable
-              columns={columns}
-              data={tableData}
-
-              // ✅ Enable All Useful Features
-              enableSorting
-              enableColumnFilters
-              enableColumnPinning
-              enableRowSelection
-              enableColumnActions
-              enableDensityToggle
-              enableStickyHeader
-              enableStickyFooter
-              enableGlobalFilter
-              enablePagination
-              enableGrouping
-              enableMultiSort
-              enableRowNumbers
-              enableSelectAll
-              enableColumnResizing
-              enableColumnVirtualization
-              layoutMode="grid"
-              // ✅ Editing Setup (Use muiTableBodyRowProps)
-              enableEditing
-              debugTable={true} // ✅ Shows MRT logs in console
-              muiTableBodyRowProps={({ row }) => ({
-                onDoubleClick: () => console.log(`Editing row: ${row.original.id}`),
-                sx: { cursor: 'pointer' },
-              })}
-              onEditingRowSave={({ values }) => {
-                setTableData((prevData) =>
-                  prevData.map((row) => (row.id === values.id ? values : row))
-                );
-              }}
-              muiTableContainerProps={{
-                sx: {
-                  overflowX: 'auto', // Ensures scrolling only appears when needed
-                  maxWidth: '100%', // Prevents unnecessary stretching
-                },
-              }}
-              muiTableHeadCellProps={{
-                sx: {
-                  backgroundColor: "#4A90E2",
-                  color: "#fff",
-                  fontWeight: "bold",
-                },
-              }}
-            />
-          </Paper>
-        </Box>
-      </Container>
-    </ThemeProvider>
+  const columns = useMemo<MRT_ColumnDef<User>[]>(
+    () => [
+      {
+        accessorKey: 'id',
+        header: 'Id',
+        enableEditing: false,
+        size: 80,
+      },
+      {
+        accessorKey: 'firstName',
+        header: 'First Name',
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.firstName,
+          helperText: validationErrors?.firstName,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              firstName: undefined,
+            }),
+          //optionally add validation checking for onBlur or onChange
+        },
+      },
+      {
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        muiEditTextFieldProps: {
+          required: true,
+          error: !!validationErrors?.lastName,
+          helperText: validationErrors?.lastName,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              lastName: undefined,
+            }),
+        },
+      },
+      {
+        accessorKey: 'email',
+        header: 'Email',
+        muiEditTextFieldProps: {
+          type: 'email',
+          required: true,
+          error: !!validationErrors?.email,
+          helperText: validationErrors?.email,
+          //remove any previous validation errors when user focuses on the input
+          onFocus: () =>
+            setValidationErrors({
+              ...validationErrors,
+              email: undefined,
+            }),
+        },
+      },
+      {
+        accessorKey: 'state',
+        header: 'State',
+        editVariant: 'select',
+        editSelectOptions: usStates,
+        muiEditTextFieldProps: {
+          select: true,
+          error: !!validationErrors?.state,
+          helperText: validationErrors?.state,
+        },
+      },
+    ],
+    [validationErrors],
   );
+
+
+  function updateUser(updatedInfo: User) {
+    const updatedData = fakeData.map(user => {
+      // If the user's ID matches, update the user's information
+      if (user.id === updatedInfo.id) {
+        return { ...user, ...updatedInfo };
+      }
+      // Otherwise, return the user as is
+      return user;
+    });
+  
+    return updatedData;
+  }
+
+  //UPDATE action
+  const handleSaveUser: MRT_TableOptions<User>['onEditingRowSave'] = async ({
+    values,
+    table,
+  }) => {
+    const newValidationErrors = validateUser(values);
+    if (Object.values(newValidationErrors).some((error) => error)) {
+      setValidationErrors(newValidationErrors);
+      return;
+    }
+    setValidationErrors({});
+    await updateUser(values);
+    table.setEditingRow(null); //exit editing mode
+  };
+
+  const table = useMaterialReactTable({
+    columns,
+    data: fakeData,
+    editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
+    enableEditing: true,
+    getRowId: (row) => row.id,
+    muiToolbarAlertBannerProps: 
+       {
+          color: 'error',
+          children: 'Error loading data',
+        },
+    muiTableContainerProps: {
+      sx: {
+        minHeight: '500px',
+      },
+    },
+    onEditingRowCancel: () => setValidationErrors({}),
+    onEditingRowSave: handleSaveUser,
+  
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="h3">Edit User</DialogTitle>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
+    renderRowActions: ({ row, table }) => (
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Tooltip title="Edit">
+          <IconButton onClick={() => table.setEditingRow(row)}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+      
+      </Box>
+    ),
+
+   
+  });
+
+  return <MaterialReactTable table={table} />;
 };
 
-export default StyledMRT;
+const validateRequired = (value: string) => !!value.length;
+const validateEmail = (email: string) =>
+  !!email.length &&
+  email
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    );
+
+function validateUser(user: User) {
+  return {
+    firstName: !validateRequired(user.firstName)
+      ? 'First Name is Required'
+      : '',
+    lastName: !validateRequired(user.lastName) ? 'Last Name is Required' : '',
+    email: !validateEmail(user.email) ? 'Incorrect Email Format' : '',
+  };
+}

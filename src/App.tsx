@@ -1,10 +1,10 @@
 import './App.css'
-import StyledMRT from './MRT'
+import {Example} from './MRT'
 
 function App() {
 
   return (
-   <StyledMRT />
+    <Example />
   )
 }
 

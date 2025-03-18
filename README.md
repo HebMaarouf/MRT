@@ -40,3 +40,5 @@ npm run dev
 Access the project in your browser:
 
 Open http://localhost:5173 (default Vite port) 
+
+Note: This is a simple example, but you can extend it to create a more advanced, fully featured table. You can add functionalities like row deletion, creating new rows, fetching data from a server, displaying loading and fetching states, and much more. Experiment with it, and you will discover even more possibilities!
