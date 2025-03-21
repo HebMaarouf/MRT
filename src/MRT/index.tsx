@@ -15,8 +15,9 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { type User, fakeData, usStates } from './makeData';
+import {  fakeData, usStates } from './makeData';
 import EditIcon from '@mui/icons-material/Edit';
+import { User } from '../Types/user';
 
 
 
@@ -25,7 +26,8 @@ export const Example = () => {
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-
+  
+  //should be memoized or stable to avioid recreating the columns on every render
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
       {
@@ -35,7 +37,7 @@ export const Example = () => {
         size: 80,
       },
       {
-        accessorKey: 'firstName',
+        accessorKey: 'name.firstName',
         header: 'First Name',
         muiEditTextFieldProps: {
           required: true,
@@ -51,7 +53,7 @@ export const Example = () => {
         },
       },
       {
-        accessorKey: 'lastName',
+        accessorKey: 'name.lastName',
         header: 'Last Name',
         muiEditTextFieldProps: {
           required: true,
@@ -185,10 +187,10 @@ const validateEmail = (email: string) =>
 
 function validateUser(user: User) {
   return {
-    firstName: !validateRequired(user.firstName)
+    firstName: !validateRequired(user.name.firstName)
       ? 'First Name is Required'
       : '',
-    lastName: !validateRequired(user.lastName) ? 'Last Name is Required' : '',
+    lastName: !validateRequired(user.name.lastName) ? 'Last Name is Required' : '',
     email: !validateEmail(user.email) ? 'Incorrect Email Format' : '',
   };
 }
