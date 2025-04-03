@@ -1,4 +1,5 @@
 import {useMemo, useState } from 'react';
+import SearchIcon from "@mui/icons-material/Search";
 
 import {
   MRT_EditActionButtons,
@@ -9,10 +10,12 @@ import {
 } from 'material-react-table';
 import {
   Box,
+  Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
+  InputAdornment,
   Tooltip,
 } from '@mui/material';
 import {  fakeData, usStates } from './makeData';
@@ -28,6 +31,8 @@ export const Example = () => {
   >({});
   
   //should be memoized or stable to avioid recreating the columns on every render
+  const data = useMemo(()=> fakeData,[])
+
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
       {
@@ -55,6 +60,7 @@ export const Example = () => {
       {
         accessorKey: 'name.lastName',
         header: 'Last Name',
+        muiTableHeadCellProps: { style: { color: 'green' } },
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.lastName,
@@ -68,8 +74,10 @@ export const Example = () => {
         },
       },
       {
+        enableClickToCopy: true,
         accessorKey: 'email',
         header: 'Email',
+        Header: <i style={{ color: 'red' }}>Email</i>,
         muiEditTextFieldProps: {
           type: 'email',
           required: true,
@@ -86,8 +94,15 @@ export const Example = () => {
       {
         accessorKey: 'state',
         header: 'State',
+        enableHiding: false, //disable a feature for this column
         editVariant: 'select',
         editSelectOptions: usStates,
+        enableGlobalFilter: false,
+        muiTableHeadCellProps: ({ column }) => ({
+          sx: {
+            color: column.getIsSorted() ? 'aqua' : 'black',
+          },
+        }),
         muiEditTextFieldProps: {
           select: true,
           error: !!validationErrors?.state,
@@ -129,18 +144,30 @@ export const Example = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: fakeData,
+    data: data,
     editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
+    initialState:{ showGlobalFilter: true }, //now the search input is visible as default
     getRowId: (row) => row.id,
-    muiToolbarAlertBannerProps: 
-       {
-          color: 'error',
-          children: 'Error loading data',
-        },
-    muiTableContainerProps: {
-      sx: {
-        minHeight: '500px',
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Button onClick={() => {
+          table.resetColumnFilters();
+          table.resetSorting();
+          table.resetPagination();
+        }}>
+        Reset table
+      </Button>
+    ),
+            
+    muiSearchTextFieldProps: {
+      variant: "outlined",
+      placeholder: "Search...",
+      InputProps: {
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon color="primary" />
+          </InputAdornment>
+        ),
       },
     },
     onEditingRowCancel: () => setValidationErrors({}),
