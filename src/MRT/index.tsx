@@ -42,7 +42,7 @@ export const Example = () => {
         size: 80,
       },
       {
-        accessorKey: 'name.firstName',
+        accessorKey: 'firstName',
         header: 'First Name',
         muiEditTextFieldProps: {
           required: true,
@@ -58,9 +58,9 @@ export const Example = () => {
         },
       },
       {
-        accessorKey: 'name.lastName',
+        accessorKey: 'lastName',
         header: 'Last Name',
-        muiTableHeadCellProps: { style: { color: 'green' } },
+        muiTableHeadCellProps: { style: { color: 'white' } }, //you can change the color like this
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.lastName,
@@ -77,7 +77,7 @@ export const Example = () => {
         enableClickToCopy: true,
         accessorKey: 'email',
         header: 'Email',
-        Header: <i style={{ color: 'red' }}>Email</i>,
+        Header: <i style={{ color: 'white' }}>Email</i>, // or you can change the color like this
         muiEditTextFieldProps: {
           type: 'email',
           required: true,
@@ -100,7 +100,8 @@ export const Example = () => {
         enableGlobalFilter: false,
         muiTableHeadCellProps: ({ column }) => ({
           sx: {
-            color: column.getIsSorted() ? 'aqua' : 'black',
+            color: column.getIsSorted() ? 'aqua' : 'white',
+            backgroundColor : '#2b7de2'
           },
         }),
         muiEditTextFieldProps: {
@@ -128,25 +129,54 @@ export const Example = () => {
   }
 
   //UPDATE action
-  const handleSaveUser: MRT_TableOptions<User>['onEditingRowSave'] = async ({
-    values,
-    table,
-  }) => {
-    const newValidationErrors = validateUser(values);
-    if (Object.values(newValidationErrors).some((error) => error)) {
-      setValidationErrors(newValidationErrors);
-      return;
-    }
-    setValidationErrors({});
-    await updateUser(values);
-    table.setEditingRow(null); //exit editing mode
-  };
+    const handleSaveUser: MRT_TableOptions<User>['onEditingRowSave'] = async ({
+      values,
+      table,
+    }) => {
+      debugger
+      const newValidationErrors = validateUser(values);
+      if (Object.values(newValidationErrors).some((error) => error)) {
+        setValidationErrors(newValidationErrors);
+        return;
+      }
+      setValidationErrors({});
+      await updateUser(values);
+      table.setEditingRow(null); //exit editing mode
+    };
 
   const table = useMaterialReactTable({
     columns,
     data: data,
     editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
+    muiTableHeadCellProps:{
+      sx: {
+        backgroundColor: '#2b7de2', // you can give style for all headers here
+        color: 'white',             
+        fontWeight: 'bold',
+      },
+    },
+    muiTableBodyCellProps:{
+      sx: {
+        color: '#212121', // Dark gray or black text
+        fontSize: '14px',
+      },
+    },
+    muiTablePaperProps:{
+      elevation: 0,
+      sx: {
+        borderRadius: '12px',
+        border: '1px solid #e0e0e0',
+      },
+    },
+    muiTableBodyRowProps:{
+      sx: {
+        '&:hover': {
+          backgroundColor: '#f5f5f5',
+        },
+      },
+    },
+
     initialState:{ showGlobalFilter: true }, //now the search input is visible as default
     getRowId: (row) => row.id,
     renderTopToolbarCustomActions: ({ table }) => {
@@ -184,24 +214,24 @@ export const Example = () => {
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveUser,
   
-    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
-      <>
-        <DialogTitle variant="h3">Edit User</DialogTitle>
-        <DialogContent
-          sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-        >
-          {internalEditComponents} {/* or render custom edit components here */}
-        </DialogContent>
-        <DialogActions>
-          <MRT_EditActionButtons variant="text" table={table} row={row} />
-        </DialogActions>
-      </>
-    ),
+      renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+        <>
+          <DialogTitle variant="h3">Edit User</DialogTitle>
+          <DialogContent
+            sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+          >
+            {internalEditComponents} {/* or render custom edit components here */}
+          </DialogContent>
+          <DialogActions>
+            <MRT_EditActionButtons variant="text" table={table} row={row} />
+          </DialogActions>
+        </>
+      ),
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Tooltip title="Edit">
           <IconButton onClick={() => table.setEditingRow(row)}>
-            <EditIcon />
+            <EditIcon  sx={{ color: '#1976d2', cursor: 'pointer' }} />
           </IconButton>
         </Tooltip>
       
@@ -211,7 +241,11 @@ export const Example = () => {
    
   });
 
-  return <MaterialReactTable table={table} />;
+  return(
+     <Box sx={{ borderRadius: '12px', overflow: 'hidden', boxShadow: 3 }}>
+    <MaterialReactTable table={table} />;
+  </Box>)
+    
 };
 
 const validateRequired = (value: string) => !!value.length;
@@ -224,11 +258,12 @@ const validateEmail = (email: string) =>
     );
 
 function validateUser(user: User) {
+  debugger
   return {
-    firstName: !validateRequired(user.name.firstName)
+    firstName: !validateRequired(user.firstName)
       ? 'First Name is Required'
       : '',
-    lastName: !validateRequired(user.name.lastName) ? 'Last Name is Required' : '',
+    lastName: !validateRequired(user.lastName) ? 'Last Name is Required' : '',
     email: !validateEmail(user.email) ? 'Incorrect Email Format' : '',
   };
 }

@@ -3,163 +3,145 @@ import { User } from "../Types/user";
 export const fakeData: User[] = [
   {
     id: '9s41rp',
-    name: {
-      firstName: 'Kelvin',
-      lastName: 'Langosh',
-    },
+
+    firstName: 'Kelvin',
+    lastName: 'Langosh ',
     email: 'Jerod14@hotmail.com',
     state: 'Ohio',
   },
   {
     id: '08m6rx',
-    name: {
-      firstName: 'Molly',
-      lastName: 'Purdy',
-    },
+
+    firstName: 'Molly',
+    lastName: 'Purdy ',
     email: 'Hugh.Dach79@hotmail.com',
     state: 'Rhode Island',
   },
   {
     id: '5ymtrc',
-    name: {
-      firstName: 'Henry',
-      lastName: 'Lynch',
-    },
+
+    firstName: 'Henry',
+    lastName: 'Lynch ',
     email: 'Camden.Macejkovic@yahoo.com',
     state: 'California',
   },
   {
     id: 'ek5b97',
-    name: {
-      firstName: 'Glenda',
-      lastName: 'Douglas',
-    },
+
+    firstName: 'Glenda',
+    lastName: 'Douglas ',
     email: 'Eric0@yahoo.com',
     state: 'Montana',
   },
   {
     id: 'xxtydd',
-    name: {
-      firstName: 'Leone',
-      lastName: 'Williamson',
-    },
+
+    firstName: 'Leone',
+    lastName: 'Williamson ',
     email: 'Ericka_Mueller52@yahoo.com',
     state: 'Colorado',
   },
   {
     id: 'wzxj9m',
-    name: {
-      firstName: 'Mckenna',
-      lastName: 'Friesen',
-    },
+
+    firstName: 'Mckenna',
+    lastName: 'Friesen ',
     email: 'Veda_Feeney@yahoo.com',
     state: 'New York',
   },
   {
     id: '21dwtz',
-    name: {
-      firstName: 'Wyman',
-      lastName: 'Jast',
-    },
+
+    firstName: 'Wyman',
+    lastName: 'Jast ',
     email: 'Melvin.Pacocha@yahoo.com',
     state: 'Montana',
   },
   {
     id: 'o8oe4k',
-    name: {
-      firstName: 'Janick',
-      lastName: 'Willms',
-    },
+
+    firstName: 'Janick',
+    lastName: 'Willms ',
     email: 'Delfina12@gmail.com',
     state: 'Nebraska',
   },
   {
     id: 'ek5b97',
-    name: {
-      firstName: 'Glenda',
-      lastName: 'Douglas',
-    },
+
+    firstName: 'Glenda',
+    lastName: 'Douglas ',
     email: 'Eric0@yahoo.com',
     state: 'Montana',
   },
   {
     id: 'xxtydd',
-    name: {
-      firstName: 'Leone',
-      lastName: 'Williamson',
-    },
+
+    firstName: 'Leone',
+    lastName: 'Williamson ',
     email: 'Ericka_Mueller52@yahoo.com',
     state: 'Colorado',
   },
   {
     id: 'wzxj9m',
-    name: {
-      firstName: 'Mckenna',
-      lastName: 'Friesen',
-    },
+
+    firstName: 'Mckenna',
+    lastName: 'Friesen ',
     email: 'Veda_Feeney@yahoo.com',
     state: 'New York',
   },
   {
     id: '21dwtz',
-    name: {
-      firstName: 'Wyman',
-      lastName: 'Jast',
-    },
+
+    firstName: 'Wyman',
+    lastName: 'Jast ',
     email: 'Melvin.Pacocha@yahoo.com',
     state: 'Montana',
   },
   {
     id: 'o8oe4k',
-    name: {
-      firstName: 'Janick',
-      lastName: 'Willms',
-    },
+
+    firstName: 'Janick',
+    lastName: 'Willms ',
     email: 'Delfina12@gmail.com',
     state: 'Nebraska',
   },
   {
     id: 'ek5b97',
-    name: {
-      firstName: 'Glenda',
-      lastName: 'Douglas',
-    },
+
+    firstName: 'Glenda',
+    lastName: 'Douglas ',
     email: 'Eric0@yahoo.com',
     state: 'Montana',
   },
   {
     id: 'xxtydd',
-    name: {
-      firstName: 'Leone',
-      lastName: 'Williamson',
-    },
+
+    firstName: 'Leone',
+    lastName: 'Williamson ',
     email: 'Ericka_Mueller52@yahoo.com',
     state: 'Colorado',
   },
   {
     id: 'wzxj9m',
-    name: {
-      firstName: 'Mckenna',
-      lastName: 'Friesen',
-    },
+
+    firstName: 'Mckenna',
+    lastName: 'Friesen ',
     email: 'Veda_Feeney@yahoo.com',
     state: 'New York',
   },
   {
     id: '21dwtz',
-    name: {
-      firstName: 'Wyman',
-      lastName: 'Jast',
-    },
+
+    firstName: 'Wyman',
+    lastName: 'Jast ',
     email: 'Melvin.Pacocha@yahoo.com',
     state: 'Montana',
   },
   {
     id: 'o8oe4k',
-    name: {
-      firstName: 'Janick',
-      lastName: 'Willms',
-    },
+
+    firstName: 'Janick',
+    lastName: 'Willms ',
     email: 'Delfina12@gmail.com',
     state: 'Nebraska',
   },
