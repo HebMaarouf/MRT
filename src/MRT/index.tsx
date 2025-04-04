@@ -149,15 +149,26 @@ export const Example = () => {
     enableEditing: true,
     initialState:{ showGlobalFilter: true }, //now the search input is visible as default
     getRowId: (row) => row.id,
-    renderTopToolbarCustomActions: ({ table }) => (
-      <Button onClick={() => {
-          table.resetColumnFilters();
-          table.resetSorting();
-          table.resetPagination();
-        }}>
-        Reset table
-      </Button>
-    ),
+    renderTopToolbarCustomActions: ({ table }) => {
+      const hasFilters = table.getState().columnFilters.length > 0;
+      const hasSorting = table.getState().sorting.length > 0;
+      const isPaginated = table.getState().pagination.pageIndex !== 0;
+
+      const showResetButton = hasFilters || hasSorting || isPaginated; //check if there is any change to in itial value before showing reset button
+
+      return showResetButton ? (
+          <Button
+              variant="outlined" // or "contained"
+              color="primary" onClick={() => {
+                  table.resetColumnFilters();
+                  table.resetSorting();
+                  table.resetPagination();
+              }}
+          >
+              Reset table
+          </Button>
+      ) : null;
+  },
             
     muiSearchTextFieldProps: {
       variant: "outlined",
