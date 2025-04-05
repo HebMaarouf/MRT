@@ -1,12 +1,17 @@
-import {useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import SearchIcon from "@mui/icons-material/Search";
-
+import { MRT_Localization_AR } from 'material-react-table/locales/ar';
+import { MRT_Localization_EN } from 'material-react-table/locales/en';
 import {
   MRT_EditActionButtons,
   MaterialReactTable,
   type MRT_ColumnDef,
   type MRT_TableOptions,
   useMaterialReactTable,
+  MRT_ShowHideColumnsButton,
+  MRT_ToggleFullScreenButton,
+  MRT_ToggleDensePaddingButton,
+  MRT_ToggleFiltersButton,
 } from 'material-react-table';
 import {
   Box,
@@ -18,32 +23,36 @@ import {
   InputAdornment,
   Tooltip,
 } from '@mui/material';
-import {  fakeData, usStates } from './makeData';
+import { fakeData, usStates } from './makeData';
 import EditIcon from '@mui/icons-material/Edit';
 import { User } from '../Types/user';
-
+import { LanguageToggle } from './languages';
+import { useTranslation } from 'react-i18next';
 
 
 export const Example = () => {
-  
+
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string | undefined>
   >({});
-  
-  //should be memoized or stable to avioid recreating the columns on every render
-  const data = useMemo(()=> fakeData,[])
+
+  //should be memoized or stable to avoid recreating the columns on every render
+  const data = useMemo(() => fakeData, [])
+  const { t, i18n } = useTranslation();
+
+  const localization = i18n.language === 'ar' ? MRT_Localization_AR : MRT_Localization_EN;
 
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
       {
         accessorKey: 'id',
-        header: 'Id',
+        header: t('id'),
         enableEditing: false,
         size: 80,
       },
       {
         accessorKey: 'firstName',
-        header: 'First Name',
+        header: t('fName'),
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.firstName,
@@ -59,13 +68,12 @@ export const Example = () => {
       },
       {
         accessorKey: 'lastName',
-        header: 'Last Name',
+        header: t('lName'),
         muiTableHeadCellProps: { style: { color: 'white' } }, //you can change the color like this
         muiEditTextFieldProps: {
           required: true,
           error: !!validationErrors?.lastName,
           helperText: validationErrors?.lastName,
-          //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
@@ -74,16 +82,15 @@ export const Example = () => {
         },
       },
       {
-        enableClickToCopy: true,
         accessorKey: 'email',
-        header: 'Email',
-        Header: <i style={{ color: 'white' }}>Email</i>, // or you can change the color like this
+        header: t('email'),
+        Header: <i style={{ color: 'white' }}>{t('email')}</i>, // or you can change the color like this
+        enableClickToCopy: true,
         muiEditTextFieldProps: {
           type: 'email',
           required: true,
           error: !!validationErrors?.email,
           helperText: validationErrors?.email,
-          //remove any previous validation errors when user focuses on the input
           onFocus: () =>
             setValidationErrors({
               ...validationErrors,
@@ -93,7 +100,7 @@ export const Example = () => {
       },
       {
         accessorKey: 'state',
-        header: 'State',
+        header: t('state'),
         enableHiding: false, //disable a feature for this column
         editVariant: 'select',
         editSelectOptions: usStates,
@@ -101,7 +108,7 @@ export const Example = () => {
         muiTableHeadCellProps: ({ column }) => ({
           sx: {
             color: column.getIsSorted() ? 'aqua' : 'white',
-            backgroundColor : '#2b7de2'
+            backgroundColor: '#2b7de2'
           },
         }),
         muiEditTextFieldProps: {
@@ -111,7 +118,7 @@ export const Example = () => {
         },
       },
     ],
-    [validationErrors],
+    [validationErrors, i18n.language],
   );
 
 
@@ -124,60 +131,66 @@ export const Example = () => {
       // Otherwise, return the user as is
       return user;
     });
-  
+
     return updatedData;
   }
 
   //UPDATE action
-    const handleSaveUser: MRT_TableOptions<User>['onEditingRowSave'] = async ({
-      values,
-      table,
-    }) => {
-      debugger
-      const newValidationErrors = validateUser(values);
-      if (Object.values(newValidationErrors).some((error) => error)) {
-        setValidationErrors(newValidationErrors);
-        return;
-      }
-      setValidationErrors({});
-      await updateUser(values);
-      table.setEditingRow(null); //exit editing mode
-    };
-
+  const handleSaveUser: MRT_TableOptions<User>['onEditingRowSave'] = async ({
+    values,
+    table,
+  }) => {
+    const newValidationErrors = validateUser(values);
+    if (Object.values(newValidationErrors).some((error) => error)) {
+      setValidationErrors(newValidationErrors);
+      return;
+    }
+    setValidationErrors({});
+    await updateUser(values);
+    table.setEditingRow(null); //exit editing mode
+  };
+ 
   const table = useMaterialReactTable({
     columns,
     data: data,
+    localization: localization,
     editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
-    muiTableHeadCellProps:{
+    muiTableHeadCellProps: {
       sx: {
         backgroundColor: '#2b7de2', // you can give style for all headers here
-        color: 'white',             
+        color: 'white',
         fontWeight: 'bold',
+        textAlign: i18n.language === 'ar' ? 'right' : 'left',
       },
     },
-    muiTableBodyCellProps:{
+    muiTableBodyCellProps: {
       sx: {
-        color: '#212121', // Dark gray or black text
+        color: '#212121', 
         fontSize: '14px',
+        textAlign: i18n.language === 'ar' ? 'right' : 'left',
       },
     },
-    muiTablePaperProps:{
+    muiTablePaperProps: {
       elevation: 0,
       sx: {
         borderRadius: '12px',
         border: '1px solid #e0e0e0',
       },
     },
-    muiTableBodyRowProps:{
+    muiTableBodyRowProps: {
       sx: {
         '&:hover': {
           backgroundColor: '#f5f5f5',
         },
       },
     },
-
-    initialState:{ showGlobalFilter: true }, //now the search input is visible as default
+    
+    initialState: {
+      showGlobalFilter: true, //now the search input is visible as default
+      density: 'compact'
+    }, 
+    
     getRowId: (row) => row.id,
     renderTopToolbarCustomActions: ({ table }) => {
       const hasFilters = table.getState().columnFilters.length > 0;
@@ -187,22 +200,32 @@ export const Example = () => {
       const showResetButton = hasFilters || hasSorting || isPaginated; //check if there is any change to in itial value before showing reset button
 
       return showResetButton ? (
-          <Button
-              variant="outlined" // or "contained"
-              color="primary" onClick={() => {
-                  table.resetColumnFilters();
-                  table.resetSorting();
-                  table.resetPagination();
-              }}
-          >
-              Reset table
-          </Button>
+        <Button
+          variant="outlined" // or "contained"
+          color="primary" onClick={() => {
+            table.resetColumnFilters();
+            table.resetSorting();
+            table.resetPagination();
+          }}
+        >
+          {t('resetTable')}
+        </Button>
       ) : null;
-  },
-            
+    },
+    renderToolbarInternalActions: ({ table }) => (
+      <>
+        {/* add your own language button or something */}
+        <LanguageToggle />
+        {/* built-in buttons (must pass in table prop for them to work!) */}
+        <MRT_ShowHideColumnsButton table={table} />
+        <MRT_ToggleFullScreenButton table={table} />
+        <MRT_ToggleDensePaddingButton table={table} />
+        <MRT_ToggleFiltersButton table={table} />
+      </>
+    ),
     muiSearchTextFieldProps: {
       variant: "outlined",
-      placeholder: "Search...",
+      placeholder: t('search'),
       InputProps: {
         startAdornment: (
           <InputAdornment position="start">
@@ -213,57 +236,54 @@ export const Example = () => {
     },
     onEditingRowCancel: () => setValidationErrors({}),
     onEditingRowSave: handleSaveUser,
-  
-      renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
-        <>
-          <DialogTitle variant="h3">Edit User</DialogTitle>
-          <DialogContent
-            sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
-          >
-            {internalEditComponents} {/* or render custom edit components here */}
-          </DialogContent>
-          <DialogActions>
-            <MRT_EditActionButtons variant="text" table={table} row={row} />
-          </DialogActions>
-        </>
-      ),
+
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <>
+        <DialogTitle variant="h3">{t('edit')}</DialogTitle>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}
+        >
+          {internalEditComponents} {/* or render custom edit components here */}
+        </DialogContent>
+        <DialogActions>
+          <MRT_EditActionButtons variant="text" table={table} row={row} />
+        </DialogActions>
+      </>
+    ),
     renderRowActions: ({ row, table }) => (
       <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Tooltip title="Edit">
+        <Tooltip title={t('edit')}>
           <IconButton onClick={() => table.setEditingRow(row)}>
-            <EditIcon  sx={{ color: '#1976d2', cursor: 'pointer' }} />
+            <EditIcon sx={{ color: '#1976d2', cursor: 'pointer' }} />
           </IconButton>
         </Tooltip>
-      
+
       </Box>
     ),
-
-   
   });
 
-  return(
-     <Box sx={{ borderRadius: '12px', overflow: 'hidden', boxShadow: 3 }}>
-    <MaterialReactTable table={table} />;
-  </Box>)
+  function validateUser(user: User) {
     
+    return {
+      firstName: !validateRequired(user.firstName)
+        ? t('firstNameValidation')
+        : '',
+      lastName: !validateRequired(user.lastName) ? t('lasttNameValidation') : '',
+      email: !validateEmail(user.email) ? t('emailValidation') : '',
+    };
+  }
+  return (
+    <Box sx={{ borderRadius: '12px', overflow: 'hidden', boxShadow: 3 }}>
+      <MaterialReactTable table={table} />;
+    </Box>)
+
 };
 
 const validateRequired = (value: string) => !!value.length;
 const validateEmail = (email: string) =>
   !!email.length &&
   email
-    .toLowerCase()
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     );
 
-function validateUser(user: User) {
-  debugger
-  return {
-    firstName: !validateRequired(user.firstName)
-      ? 'First Name is Required'
-      : '',
-    lastName: !validateRequired(user.lastName) ? 'Last Name is Required' : '',
-    email: !validateEmail(user.email) ? 'Incorrect Email Format' : '',
-  };
-}

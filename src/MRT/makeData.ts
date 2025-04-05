@@ -1,9 +1,8 @@
 import { User } from "../Types/user";
 
-export const fakeData: User[] = [
+export const fakeData: User[] = [ // you will read the data from an api
   {
     id: '9s41rp',
-
     firstName: 'Kelvin',
     lastName: 'Langosh ',
     email: 'Jerod14@hotmail.com',
@@ -11,7 +10,6 @@ export const fakeData: User[] = [
   },
   {
     id: '08m6rx',
-
     firstName: 'Molly',
     lastName: 'Purdy ',
     email: 'Hugh.Dach79@hotmail.com',
@@ -19,7 +17,6 @@ export const fakeData: User[] = [
   },
   {
     id: '5ymtrc',
-
     firstName: 'Henry',
     lastName: 'Lynch ',
     email: 'Camden.Macejkovic@yahoo.com',
@@ -27,7 +24,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'ek5b97',
-
     firstName: 'Glenda',
     lastName: 'Douglas ',
     email: 'Eric0@yahoo.com',
@@ -35,7 +31,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'xxtydd',
-
     firstName: 'Leone',
     lastName: 'Williamson ',
     email: 'Ericka_Mueller52@yahoo.com',
@@ -43,7 +38,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'wzxj9m',
-
     firstName: 'Mckenna',
     lastName: 'Friesen ',
     email: 'Veda_Feeney@yahoo.com',
@@ -51,7 +45,6 @@ export const fakeData: User[] = [
   },
   {
     id: '21dwtz',
-
     firstName: 'Wyman',
     lastName: 'Jast ',
     email: 'Melvin.Pacocha@yahoo.com',
@@ -59,7 +52,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'o8oe4k',
-
     firstName: 'Janick',
     lastName: 'Willms ',
     email: 'Delfina12@gmail.com',
@@ -67,7 +59,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'ek5b97',
-
     firstName: 'Glenda',
     lastName: 'Douglas ',
     email: 'Eric0@yahoo.com',
@@ -75,7 +66,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'xxtydd',
-
     firstName: 'Leone',
     lastName: 'Williamson ',
     email: 'Ericka_Mueller52@yahoo.com',
@@ -83,7 +73,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'wzxj9m',
-
     firstName: 'Mckenna',
     lastName: 'Friesen ',
     email: 'Veda_Feeney@yahoo.com',
@@ -91,7 +80,6 @@ export const fakeData: User[] = [
   },
   {
     id: '21dwtz',
-
     firstName: 'Wyman',
     lastName: 'Jast ',
     email: 'Melvin.Pacocha@yahoo.com',
@@ -99,7 +87,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'o8oe4k',
-
     firstName: 'Janick',
     lastName: 'Willms ',
     email: 'Delfina12@gmail.com',
@@ -107,7 +94,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'ek5b97',
-
     firstName: 'Glenda',
     lastName: 'Douglas ',
     email: 'Eric0@yahoo.com',
@@ -115,7 +101,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'xxtydd',
-
     firstName: 'Leone',
     lastName: 'Williamson ',
     email: 'Ericka_Mueller52@yahoo.com',
@@ -123,7 +108,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'wzxj9m',
-
     firstName: 'Mckenna',
     lastName: 'Friesen ',
     email: 'Veda_Feeney@yahoo.com',
@@ -131,7 +115,6 @@ export const fakeData: User[] = [
   },
   {
     id: '21dwtz',
-
     firstName: 'Wyman',
     lastName: 'Jast ',
     email: 'Melvin.Pacocha@yahoo.com',
@@ -139,7 +122,6 @@ export const fakeData: User[] = [
   },
   {
     id: 'o8oe4k',
-
     firstName: 'Janick',
     lastName: 'Willms ',
     email: 'Delfina12@gmail.com',
