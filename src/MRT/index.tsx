@@ -153,7 +153,8 @@ export const Example = () => {
   const table = useMaterialReactTable({
     columns,
     data: data,
-    localization: localization,
+    localization: {...localization,
+        of: i18n.language === 'ar' ? 'من' : 'of'}, // override the table localization string
     editDisplayMode: 'modal', //default ('row', 'cell', 'table', and 'custom' are also available)
     enableEditing: true,
     muiTableHeadCellProps: {
